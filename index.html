@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sur Sangam — Golden Hindi Film Music</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Yeseva+One&family=Mukta:wght@400;500;600;700&family=Teko:wght@500;600&display=swap');
+
+  :root{
+    --maroon:#5c1a1a;
+    --maroon-deep:#3d0f0f;
+    --brass:#c99a3b;
+    --brass-bright:#e8b94f;
+    --cream:#f3e6c8;
+    --paper:#ede0c2;
+    --teal:#1f5c56;
+    --ink:#2a1810;
+    --shadow: rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse at top, #7a2b2b 0%, var(--maroon-deep) 55%, #24080a 100%);
+    color:var(--cream);
+    font-family:'Mukta',sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+  /* film grain / dust overlay */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(rgba(255,255,255,.03) 1px, transparent 1px);
+    background-size:3px 3px;
+    pointer-events:none;
+    z-index:1;
+    opacity:.5;
+  }
+
+  header{
+    position:relative;
+    text-align:center;
+    padding:56px 20px 34px;
+    z-index:2;
+  }
+  .eyebrow{
+    font-family:'Teko',sans-serif;
+    letter-spacing:.4em;
+    font-size:14px;
+    color:var(--brass-bright);
+    text-transform:uppercase;
+    margin-bottom:8px;
+  }
+  h1{
+    font-family:'Yeseva One',serif;
+    font-size:clamp(38px,7vw,68px);
+    margin:0;
+    color:var(--brass-bright);
+    text-shadow: 0 2px 0 var(--maroon-deep), 0 4px 14px var(--shadow);
+    letter-spacing:.01em;
+  }
+  .tagline{
+    font-size:16px;
+    color:var(--paper);
+    opacity:.85;
+    margin-top:10px;
+    font-style:italic;
+  }
+
+  /* Radio dial decade selector — signature element */
+  .dial-wrap{
+    display:flex;
+    justify-content:center;
+    margin:34px auto 8px;
+    z-index:2;
+    position:relative;
+  }
+  .dial{
+    display:flex;
+    gap:0;
+    background:linear-gradient(180deg,#7a4a1a,#4a2c0f);
+    border:3px solid var(--brass);
+    border-radius:40px;
+    padding:6px;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,.5), 0 6px 18px rgba(0,0,0,.5);
+  }
+  .dial button{
+    font-family:'Teko',sans-serif;
+    font-size:19px;
+    letter-spacing:.06em;
+    background:transparent;
+    border:none;
+    color:var(--cream);
+    opacity:.65;
+    padding:10px 18px;
+    border-radius:30px;
+    cursor:pointer;
+    transition:.25s;
+  }
+  .dial button:hover{opacity:.9;}
+  .dial button.active{
+    background:linear-gradient(180deg,var(--brass-bright),var(--brass));
+    color:var(--maroon-deep);
+    opacity:1;
+    font-weight:600;
+    box-shadow:0 2px 8px rgba(0,0,0,.4);
+  }
+
+  .search-row{
+    display:flex;
+    justify-content:center;
+    margin:22px 0 10px;
+    z-index:2;
+    position:relative;
+  }
+  .search-row input{
+    width:min(420px,86vw);
+    padding:12px 18px;
+    border-radius:24px;
+    border:2px solid var(--brass);
+    background:rgba(0,0,0,.25);
+    color:var(--cream);
+    font-family:'Mukta',sans-serif;
+    font-size:15px;
+    outline:none;
+  }
+  .search-row input::placeholder{color:rgba(243,230,200,.5);}
+  .search-row input:focus{border-color:var(--brass-bright);}
+
+  main{
+    max-width:1080px;
+    margin:0 auto;
+    padding:20px 24px 100px;
+    position:relative;
+    z-index:2;
+  }
+
+  .era-heading{
+    font-family:'Yeseva One',serif;
+    font-size:26px;
+    color:var(--brass-bright);
+    margin:44px 0 6px;
+    padding-bottom:8px;
+    border-bottom:1px solid rgba(232,185,79,.3);
+  }
+  .era-sub{
+    font-size:13px;
+    color:var(--paper);
+    opacity:.65;
+    margin-bottom:18px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:16px;
+  }
+
+  .card{
+    background:linear-gradient(160deg, rgba(243,230,200,.08), rgba(0,0,0,.18));
+    border:1px solid rgba(232,185,79,.25);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    cursor:pointer;
+    transition:.2s;
+    position:relative;
+    overflow:hidden;
+  }
+  .card:hover{
+    border-color:var(--brass-bright);
+    background:linear-gradient(160deg, rgba(243,230,200,.14), rgba(0,0,0,.2));
+    transform:translateY(-2px);
+  }
+  .card .disc{
+    width:34px;height:34px;
+    border-radius:50%;
+    background:radial-gradient(circle at 40% 40%, #444 0 3px, #111 4px 14px, #333 15px 17px);
+    float:right;
+    opacity:.8;
+  }
+  .card h3{
+    font-family:'Mukta',sans-serif;
+    font-weight:700;
+    font-size:17px;
+    margin:2px 0 4px;
+    color:var(--cream);
+    line-height:1.3;
+  }
+  .card .meta{
+    font-size:12.5px;
+    color:var(--brass-bright);
+    opacity:.9;
+    margin-bottom:2px;
+  }
+  .card .people{
+    font-size:12px;
+    color:var(--paper);
+    opacity:.7;
+  }
+  .card .play-hint{
+    margin-top:10px;
+    font-family:'Teko',sans-serif;
+    letter-spacing:.08em;
+    font-size:13px;
+    color:var(--teal);
+    background:var(--brass-bright);
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:20px;
+    color:var(--maroon-deep);
+    font-weight:600;
+  }
+
+  .empty{
+    text-align:center;
+    padding:60px 20px;
+    opacity:.6;
+    font-style:italic;
+  }
+
+  /* Player dock */
+  #dock{
+    position:fixed;
+    left:0; right:0; bottom:0;
+    background:linear-gradient(180deg, #2c0d0d, #180505);
+    border-top:2px solid var(--brass);
+    z-index:50;
+    transform:translateY(100%);
+    transition:transform .35s ease;
+    box-shadow:0 -8px 30px rgba(0,0,0,.6);
+  }
+  #dock.open{transform:translateY(0);}
+  .dock-inner{
+    max-width:1080px;
+    margin:0 auto;
+    padding:12px 18px;
+    display:flex;
+    gap:16px;
+    align-items:center;
+  }
+  .dock-info{flex:1;min-width:0;}
+  .dock-info .t{font-weight:700;font-size:15px;color:var(--brass-bright);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .dock-info .m{font-size:12px;color:var(--paper);opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #player-frame-holder{
+    width:46px;height:46px;
+    flex-shrink:0;
+    border-radius:8px;
+    overflow:hidden;
+    border:1px solid rgba(232,185,79,.4);
+    background:#000;
+  }
+  #player-frame-holder iframe{width:100%;height:100%;border:0;display:block;}
+  .now-playing-disc{
+    display:none;
+  }
+  @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+  .eq-bars{
+    display:flex;align-items:flex-end;gap:2px;
+    width:18px;height:14px;
+  }
+  .eq-bars span{
+    width:3px;background:var(--brass-bright);
+    animation:eq 0.9s ease-in-out infinite;
+  }
+  .eq-bars span:nth-child(1){height:40%;animation-delay:0s;}
+  .eq-bars span:nth-child(2){height:100%;animation-delay:.2s;}
+  .eq-bars span:nth-child(3){height:65%;animation-delay:.4s;}
+  @keyframes eq{0%,100%{transform:scaleY(.4);}50%{transform:scaleY(1);}}
+  .dock-close{
+    background:none;border:none;color:var(--brass-bright);
+    font-size:22px;cursor:pointer;padding:4px 10px;
+    flex-shrink:0;
+  }
+  .dock-nav{
+    background:rgba(232,185,79,.12);
+    border:1px solid rgba(232,185,79,.4);
+    color:var(--brass-bright);
+    font-size:16px;
+    width:36px;height:36px;
+    border-radius:50%;
+    cursor:pointer;
+    flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    transition:.2s;
+  }
+  .dock-nav:hover{background:rgba(232,185,79,.25);}
+  .dock-nav:disabled{opacity:.3;cursor:default;}
+  .autoskip-toggle{
+    display:flex;align-items:center;gap:6px;
+    font-size:12px;color:var(--paper);opacity:.8;
+    flex-shrink:0;cursor:pointer;
+    white-space:nowrap;
+  }
+  .autoskip-toggle input{accent-color:var(--brass-bright);cursor:pointer;}
+  .note{
+    font-size:11px;color:var(--paper);opacity:.5;flex-shrink:0;max-width:160px;
+    display:none;
+  }
+  @media(min-width:640px){.note{display:block;}}
+  @media(max-width:560px){.note{display:none;} .autoskip-toggle span{display:none;}}
+
+  footer{
+    text-align:center;
+    padding:26px 20px 120px;
+    font-size:12px;
+    color:var(--paper);
+    opacity:.5;
+    position:relative;
+    z-index:2;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Sur • Sangam</div>
+  <h1>सुर संगम</h1>
+  <div class="tagline">A radio dial for the golden age of Hindi film music — free, always.</div>
+</header>
+
+<div class="dial-wrap">
+  <div class="dial" id="dial"></div>
+</div>
+
+<div class="search-row">
+  <input id="searchBox" type="text" placeholder="Search a song, singer, or film…" autocomplete="off">
+</div>
+
+<main id="main"></main>
+
+<footer>
+  Playback via official YouTube embeds. No audio is hosted or stored by this page — tap any song to tune in.
+</footer>
+
+<div id="dock">
+  <div class="dock-inner">
+    <button class="dock-nav" id="prevBtn" title="Previous">⏮</button>
+    <div id="player-frame-holder"><div id="yt-player"></div></div>
+    <div class="now-playing-disc" id="npDisc"><div class="eq-bars"><span></span><span></span><span></span></div></div>
+    <button class="dock-nav" id="nextBtn" title="Skip">⏭</button>
+    <div class="dock-info">
+      <div class="t" id="dockTitle">—</div>
+      <div class="m" id="dockMeta">—</div>
+    </div>
+    <label class="autoskip-toggle" title="Auto-play next song when this one ends">
+      <input type="checkbox" id="autoSkipToggle" checked>
+      <span>Auto-skip</span>
+    </label>
+    <button class="dock-close" id="dockClose" title="Close player">✕</button>
+  </div>
+</div>
+
+<script>
+// Curated metadata only (titles, films, years, artists) — no lyrics, no hosted audio.
+const LIBRARY = {
+  "1950s": {
+    sub: "The era of Lata, Rafi, and the birth of playback singing's golden voice",
+    songs: [
+      {t:"Aayega Aanewala", f:"Mahal", y:"1949", s:"Lata Mangeshkar", c:"Khemchand Prakash"},
+      {t:"Suhani Raat Dhal Chuki", f:"Dulari", y:"1949", s:"Mohammed Rafi", c:"Naushad"},
+      {t:"Awaara Hoon", f:"Awaara", y:"1951", s:"Mukesh", c:"Shankar-Jaikishan"},
+      {t:"Yeh Raat Yeh Chandni Phir Kahan", f:"Jaal", y:"1952", s:"Kishore Kumar", c:"S.D. Burman"},
+      {t:"Yeh Zindagi Usi Ki Hai", f:"Anarkali", y:"1953", s:"Lata Mangeshkar", c:"C. Ramchandra"},
+      {t:"Man Dole Mera Tan Dole", f:"Nagin", y:"1954", s:"Lata Mangeshkar", c:"Hemant Kumar"},
+      {t:"Mera Joota Hai Japani", f:"Shree 420", y:"1955", s:"Mukesh", c:"Shankar-Jaikishan"},
+      {t:"Pyar Hua Iqrar Hua", f:"Shree 420", y:"1955", s:"Lata Mangeshkar, Manna Dey", c:"Shankar-Jaikishan"},
+      {t:"Tu Pyar Ka Sagar Hai", f:"Seema", y:"1955", s:"Mohammed Rafi", c:"Shankar-Jaikishan"},
+      {t:"Nagri Nagri Phira Musafir", f:"Uran Khatola", y:"1955", s:"Lata Mangeshkar", c:"Naushad"},
+      {t:"Ye Raat Bhigi Bhigi", f:"Chori Chori", y:"1956", s:"Lata Mangeshkar, Manna Dey", c:"Shankar-Jaikishan"},
+      {t:"Chal Ud Ja Re Panchhi", f:"Bhabhi", y:"1957", s:"Mohammed Rafi", c:"Chitragupta"},
+      {t:"Jaane Woh Kaise Log The", f:"Pyaasa", y:"1957", s:"Hemant Kumar", c:"S.D. Burman"},
+      {t:"Sar Jo Tera Chakraye", f:"Pyaasa", y:"1957", s:"Mohammed Rafi", c:"S.D. Burman"},
+      {t:"Ina Mina Dika", f:"Aasha", y:"1957", s:"Kishore Kumar", c:"C. Ramchandra"},
+      {t:"Mera Naam Chin Chin Choo", f:"Howrah Bridge", y:"1958", s:"Geeta Dutt", c:"O.P. Nayyar"},
+      {t:"Waqt Ne Kiya Kya Haseen Sitam", f:"Kaagaz Ke Phool", y:"1959", s:"Geeta Dutt", c:"S.D. Burman"},
+      {t:"Chaudhvin Ka Chand Ho", f:"Chaudhvin Ka Chand", y:"1960", s:"Mohammed Rafi", c:"Ravi"}
+    ]
+  },
+  "1960s": {
+    sub: "Cinemascope romance and orchestral sweep",
+    songs: [
+      {t:"Chal Ri Sajni", f:"Bombai Ka Babu", y:"1960", s:"Lata Mangeshkar", c:"S.D. Burman"},
+      {t:"Ehsaan Tera Hoga Mujh Par", f:"Junglee", y:"1961", s:"Mohammed Rafi", c:"Shankar-Jaikishan"},
+      {t:"Tumse Achha Kaun Hai", f:"Jab Pyar Kisise Hota Hai", y:"1961", s:"Mohammed Rafi, Asha Bhosle", c:"Shankar-Jaikishan"},
+      {t:"Kahin Deep Jale Kahin Dil", f:"Bees Saal Baad", y:"1962", s:"Lata Mangeshkar", c:"Hemant Kumar"},
+      {t:"Chalo Ek Baar Phir Se", f:"Gumrah", y:"1963", s:"Mahendra Kapoor", c:"Ravi"},
+      {t:"Ae Mere Watan Ke Logo", f:"Republic Day tribute (non-film)", y:"1963", s:"Lata Mangeshkar", c:"C. Ramchandra"},
+      {t:"Mere Mehboob Tujhe", f:"Mere Mehboob", y:"1963", s:"Mohammed Rafi", c:"Naushad"},
+      {t:"Chahunga Main Tujhe", f:"Dosti", y:"1964", s:"Mohammed Rafi", c:"Laxmikant-Pyarelal"},
+      {t:"Yeh Chand Sa Roshan Chehra", f:"Kashmir Ki Kali", y:"1964", s:"Mohammed Rafi", c:"O.P. Nayyar"},
+      {t:"Deewana Hua Badal", f:"Kashmir Ki Kali", y:"1964", s:"Mohammed Rafi, Asha Bhosle", c:"O.P. Nayyar"},
+      {t:"Lag Ja Gale", f:"Woh Kaun Thi?", y:"1964", s:"Lata Mangeshkar", c:"Madan Mohan"},
+      {t:"Kaanton Se Kheenchke Ye Aanchal", f:"Guide", y:"1965", s:"Lata Mangeshkar", c:"S.D. Burman"},
+      {t:"Gata Rahe Mera Dil", f:"Guide", y:"1965", s:"Kishore Kumar, Lata Mangeshkar", c:"S.D. Burman"},
+      {t:"Aaj Phir Jeene Ki Tamanna Hai", f:"Guide", y:"1965", s:"Lata Mangeshkar", c:"S.D. Burman"},
+      {t:"Piya Tose Naina Laage Re", f:"Guide", y:"1965", s:"Lata Mangeshkar", c:"S.D. Burman"},
+      {t:"Baharon Phool Barsao", f:"Suraj", y:"1966", s:"Mohammed Rafi", c:"Shankar-Jaikishan"},
+      {t:"Roop Tera Mastana", f:"Aradhana", y:"1969", s:"Kishore Kumar", c:"S.D. Burman"},
+      {t:"Mere Sapno Ki Rani", f:"Aradhana", y:"1969", s:"Kishore Kumar", c:"S.D. Burman"},
+      {t:"Kora Kagaz Tha Yeh Man Mera", f:"Aradhana", y:"1969", s:"Kishore Kumar, Lata Mangeshkar", c:"S.D. Burman"},
+      {t:"Bindiya Chamkegi", f:"Do Raaste", y:"1969", s:"Lata Mangeshkar, Mohammed Rafi", c:"Laxmikant-Pyarelal"}
+    ]
+  },
+  "1970s": {
+    sub: "R.D. Burman's funk-inflected revolution and the rise of Kishore Kumar",
+    songs: [
+      {t:"Yeh Shaam Mastani", f:"Kati Patang", y:"1970", s:"Kishore Kumar", c:"R.D. Burman"},
+      {t:"Jeevan Se Bhari Teri Aankhen", f:"Safar", y:"1970", s:"Kishore Kumar", c:"Kalyanji-Anandji"},
+      {t:"Piya Tu Ab To Aaja", f:"Caravan", y:"1971", s:"Asha Bhosle", c:"R.D. Burman"},
+      {t:"Dum Maro Dum", f:"Hare Rama Hare Krishna", y:"1971", s:"Asha Bhosle", c:"R.D. Burman"},
+      {t:"Kuch To Log Kahenge", f:"Amar Prem", y:"1972", s:"Kishore Kumar", c:"R.D. Burman"},
+      {t:"Chingari Koi Bhadke", f:"Amar Prem", y:"1972", s:"Kishore Kumar", c:"R.D. Burman"},
+      {t:"O Mere Dil Ke Chain", f:"Mere Jeevan Saathi", y:"1972", s:"Kishore Kumar", c:"R.D. Burman"},
+      {t:"Chalte Chalte Yunhi Koi Mil Gaya Tha", f:"Pakeezah", y:"1972", s:"Lata Mangeshkar", c:"Ghulam Mohammed"},
+      {t:"Inhi Logon Ne Le Liya Dupatta Mera", f:"Pakeezah", y:"1972", s:"Lata Mangeshkar", c:"Ghulam Mohammed"},
+      {t:"Chura Liya Hai Tumne", f:"Yaadon Ki Baaraat", y:"1973", s:"Mohammed Rafi, Asha Bhosle", c:"R.D. Burman"},
+      {t:"Pal Pal Dil Ke Paas", f:"Blackmail", y:"1973", s:"Kishore Kumar", c:"R.D. Burman"},
+      {t:"Mehbooba Mehbooba", f:"Sholay", y:"1975", s:"R.D. Burman", c:"R.D. Burman"},
+      {t:"Yeh Dosti Hum Nahi Todenge", f:"Sholay", y:"1975", s:"Kishore Kumar, Manna Dey", c:"R.D. Burman"},
+      {t:"Tere Bina Zindagi Se", f:"Aandhi", y:"1975", s:"Kishore Kumar, Lata Mangeshkar", c:"R.D. Burman"},
+      {t:"Pardah Hai Pardah", f:"Amar Akbar Anthony", y:"1977", s:"Mohammed Rafi", c:"Laxmikant-Pyarelal"},
+      {t:"Aap Ki Aankhon Mein Kuch", f:"Ghar", y:"1978", s:"Kishore Kumar, Lata Mangeshkar", c:"R.D. Burman"},
+      {t:"Aane Wala Pal", f:"Gol Maal", y:"1979", s:"Kishore Kumar", c:"R.D. Burman"},
+      {t:"Rim Jhim Gire Sawan", f:"Manzil", y:"1979", s:"Kishore Kumar, Lata Mangeshkar", c:"R.D. Burman"},
+      {t:"Yeh Jeevan Hai", f:"Piya Ka Ghar", y:"1972", s:"Kishore Kumar", c:"Laxmikant-Pyarelal"}
+    ]
+  },
+  "1980s": {
+    sub: "Synth-strings, disco beats, and the last great era of the studio orchestra",
+    songs: [
+      {t:"Tere Mere Beech Mein", f:"Ek Duuje Ke Liye", y:"1981", s:"S.P. Balasubrahmanyam, Lata Mangeshkar", c:"Laxmikant-Pyarelal"},
+      {t:"Mere Angne Mein", f:"Laawaris", y:"1981", s:"Amitabh Bachchan, Kishore Kumar", c:"Kalyanji-Anandji"},
+      {t:"Dil Cheez Kya Hai", f:"Umrao Jaan", y:"1981", s:"Asha Bhosle", c:"Khayyam"},
+      {t:"In Aankhon Ki Masti Ke", f:"Umrao Jaan", y:"1981", s:"Asha Bhosle", c:"Khayyam"},
+      {t:"Yeh Vaada Raha", f:"Yeh Vaada Raha", y:"1982", s:"Kishore Kumar, Lata Mangeshkar", c:"R.D. Burman"},
+      {t:"I Am A Disco Dancer", f:"Disco Dancer", y:"1982", s:"Vijay Benedict", c:"Bappi Lahiri"},
+      {t:"Jimmy Jimmy Aaja Aaja", f:"Disco Dancer", y:"1982", s:"Parvati Khan", c:"Bappi Lahiri"},
+      {t:"Tum Itna Jo Muskura Rahe Ho", f:"Arth", y:"1982", s:"Jagjit Singh", c:"Jagjit Singh, Chitra Singh"},
+      {t:"Jab Hum Jawan Honge", f:"Betaab", y:"1983", s:"Kishore Kumar, Asha Bhosle", c:"R.D. Burman"},
+      {t:"Humein Aur Jeene Ki Chahat Na Hoti", f:"Agar Tum Na Hote", y:"1983", s:"Kishore Kumar, Lata Mangeshkar", c:"R.D. Burman"},
+      {t:"Log Kehte Hain Main Sharabi Hoon", f:"Sharaabi", y:"1984", s:"Kishore Kumar", c:"Bappi Lahiri"},
+      {t:"Pyar Karne Wale", f:"Sagar", y:"1985", s:"Kishore Kumar, S. Janaki", c:"R.D. Burman"},
+      {t:"Chitthi Aayi Hai", f:"Naam", y:"1986", s:"Pankaj Udhas", c:"Laxmikant-Pyarelal"},
+      {t:"Hawa Hawaii", f:"Mr. India", y:"1987", s:"Kavita Krishnamurthy", c:"Laxmikant-Pyarelal"},
+      {t:"Kaate Nahin Katate", f:"Mr. India", y:"1987", s:"Kishore Kumar, Alka Yagnik", c:"Laxmikant-Pyarelal"},
+      {t:"Papa Kehte Hain", f:"Qayamat Se Qayamat Tak", y:"1988", s:"Udit Narayan", c:"Anand-Milind"}
+    ]
+  },
+  "1990s": {
+    sub: "Melodic pop-film era — Jatin-Lalit, Nadeem-Shravan, and the arrival of A.R. Rahman",
+    songs: [
+      {t:"Mera Dil Bhi Kitna Pagal Hai", f:"Saajan", y:"1991", s:"Kumar Sanu", c:"Nadeem-Shravan"},
+      {t:"Pehla Nasha", f:"Jo Jeeta Wohi Sikandar", y:"1992", s:"Udit Narayan, Sadhana Sargam", c:"Jatin-Lalit"},
+      {t:"Choli Ke Peeche", f:"Khalnayak", y:"1993", s:"Ila Arun, Alka Yagnik", c:"Laxmikant-Pyarelal"},
+      {t:"Baazigar O Baazigar", f:"Baazigar", y:"1993", s:"Vinod Rathod, Alka Yagnik", c:"Anu Malik"},
+      {t:"Yeh Kaali Kaali Aankhen", f:"Baazigar", y:"1993", s:"Kumar Sanu, Alka Yagnik", c:"Anu Malik"},
+      {t:"Tum Paas Aaye", f:"Andaz Apna Apna", y:"1994", s:"Vinod Rathod, Sadhana Sargam", c:"Ram-Laxman"},
+      {t:"Chura Ke Dil Mera", f:"Main Khiladi Tu Anari", y:"1994", s:"Abhijeet, Udit Narayan, Alka Yagnik", c:"Jatin-Lalit"},
+      {t:"Didi Tera Devar Deewana", f:"Hum Aapke Hain Koun", y:"1994", s:"Lata Mangeshkar, S.P. Balasubrahmanyam", c:"Raamlaxman"},
+      {t:"Ek Ladki Ko Dekha Toh Aisa Laga", f:"1942: A Love Story", y:"1994", s:"Kumar Sanu", c:"R.D. Burman"},
+      {t:"Tujhe Dekha To Yeh Jaana Sanam", f:"Dilwale Dulhania Le Jayenge", y:"1995", s:"Kumar Sanu, Lata Mangeshkar", c:"Jatin-Lalit"},
+      {t:"Mehndi Laga Ke Rakhna", f:"Dilwale Dulhania Le Jayenge", y:"1995", s:"Lata Mangeshkar, Udit Narayan", c:"Jatin-Lalit"},
+      {t:"Tanha Tanha", f:"Rangeela", y:"1995", s:"Asha Bhosle", c:"A.R. Rahman"},
+      {t:"Chaiyya Chaiyya", f:"Dil Se", y:"1998", s:"Sukhwinder Singh, Sapna Awasthi", c:"A.R. Rahman"},
+      {t:"Kuch Kuch Hota Hai", f:"Kuch Kuch Hota Hai", y:"1998", s:"Udit Narayan, Alka Yagnik", c:"Jatin-Lalit"},
+      {t:"Taal Se Taal Mila", f:"Taal", y:"1999", s:"Udit Narayan, Alka Yagnik", c:"A.R. Rahman"}
+    ]
+  },
+  "Qawwali & Ghazal": {
+    sub: "The devotional and the literary — songs built for the voice alone",
+    songs: [
+      {t:"Yeh Jo Halka Halka Suroor Hai", f:"Non-film ghazal", y:"1990s", s:"Nusrat Fateh Ali Khan", c:"Nusrat Fateh Ali Khan"},
+      {t:"Ranjish Hi Sahi", f:"Non-film ghazal", y:"1980", s:"Mehdi Hassan", c:"Mehdi Hassan"},
+      {t:"Aaj Jaane Ki Zid Na Karo", f:"Non-film ghazal", y:"1960s", s:"Farida Khanum", c:"Traditional"},
+      {t:"Chandi Jaisa Rang Hai Tera", f:"Fiza", y:"2000", s:"Sonu Nigam", c:"Anu Malik"},
+      {t:"Chaudhvin Ka Chand", f:"Chaudhvin Ka Chand", y:"1960", s:"Mohammed Rafi", c:"Ravi"},
+      {t:"Chadhta Sooraj Dheere Dheere", f:"Non-film qawwali", y:"1970s", s:"Aziz Nazan", c:"Traditional"},
+      {t:"Hoshwalon Ko Khabar Kya", f:"Sarfarosh", y:"1999", s:"Jagjit Singh", c:"Jatin-Lalit"},
+      {t:"Tum Itna Jo Muskura Rahe Ho", f:"Arth", y:"1982", s:"Jagjit Singh", c:"Jagjit Singh, Chitra Singh"},
+      {t:"Chitthi Na Koi Sandesh", f:"Dushman", y:"1998", s:"Jagjit Singh", c:"Anand-Milind"},
+      {t:"Dil Cheez Kya Hai", f:"Umrao Jaan", y:"1981", s:"Asha Bhosle", c:"Khayyam"},
+      {t:"In Aankhon Ki Masti Ke", f:"Umrao Jaan", y:"1981", s:"Asha Bhosle", c:"Khayyam"},
+      {t:"Piya Tose Naina Laage Re", f:"Guide", y:"1965", s:"Lata Mangeshkar", c:"S.D. Burman"}
+    ]
+  }
+};
+
+const eras = Object.keys(LIBRARY);
+let activeEra = eras[0];
+
+const dial = document.getElementById('dial');
+eras.forEach(era=>{
+  const btn = document.createElement('button');
+  btn.textContent = era;
+  if(era===activeEra) btn.classList.add('active');
+  btn.onclick = ()=>{activeEra=era; render();};
+  dial.appendChild(btn);
+});
+
+const main = document.getElementById('main');
+const searchBox = document.getElementById('searchBox');
+searchBox.addEventListener('input', render);
+
+function render(){
+  document.querySelectorAll('.dial button').forEach(b=>{
+    b.classList.toggle('active', b.textContent===activeEra);
+  });
+
+  const q = searchBox.value.trim().toLowerCase();
+  main.innerHTML = '';
+
+  const erasToShow = q ? eras : [activeEra];
+
+  let anyResults = false;
+
+  erasToShow.forEach(era=>{
+    const data = LIBRARY[era];
+    const filtered = data.songs.filter(song=>{
+      if(!q) return true;
+      return (song.t+' '+song.f+' '+song.s+' '+song.c).toLowerCase().includes(q);
+    });
+    if(filtered.length===0) return;
+    anyResults = true;
+
+    const heading = document.createElement('div');
+    heading.className = 'era-heading';
+    heading.textContent = era;
+    main.appendChild(heading);
+
+    const sub = document.createElement('div');
+    sub.className = 'era-sub';
+    sub.textContent = data.sub;
+    main.appendChild(sub);
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+
+    filtered.forEach(song=>{
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="disc"></div>
+        <div class="meta">${song.f} · ${song.y}</div>
+        <h3>${song.t}</h3>
+        <div class="people">${song.s}${song.c ? ' · ' + song.c : ''}</div>
+        <div class="play-hint">▶ Tune In</div>
+      `;
+      card._song = song;
+      card.onclick = ()=> playSong(song);
+      grid.appendChild(card);
+    });
+
+    main.appendChild(grid);
+  });
+
+  if(!anyResults){
+    main.innerHTML = `<div class="empty">No songs found for "${q}" — try a film name, singer, or title.</div>`;
+  }
+}
+
+// Player dock — uses YouTube's official IFrame Player API (search-as-playlist).
+// No scraping, no key required, and no audio is hosted here — playback happens
+// entirely inside YouTube's own embedded player.
+const dock = document.getElementById('dock');
+const dockTitle = document.getElementById('dockTitle');
+const dockMeta = document.getElementById('dockMeta');
+const dockClose = document.getElementById('dockClose');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const autoSkipToggle = document.getElementById('autoSkipToggle');
+
+let queue = [];       // the current list of songs a "Tune In" click was made from
+let queueIndex = -1;  // position within that queue
+let ytPlayer = null;
+let ytReady = false;
+let pendingSong = null;
+
+// Load the YouTube IFrame API asynchronously.
+const ytScript = document.createElement('script');
+ytScript.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(ytScript);
+
+window.onYouTubeIframeAPIReady = function(){
+  ytReady = true;
+  if(pendingSong) { loadIntoPlayer(pendingSong); pendingSong = null; }
+};
+
+function buildQueueFor(song){
+  // Queue = whatever songs are currently visible on screen, in display order.
+  const cards = Array.from(document.querySelectorAll('.card'));
+  queue = cards.map(c => c._song).filter(Boolean);
+  queueIndex = queue.findIndex(s => s.t === song.t && s.f === song.f);
+  if(queueIndex === -1){ queue = [song]; queueIndex = 0; }
+  updateNavButtons();
+}
+
+function updateNavButtons(){
+  prevBtn.disabled = queueIndex <= 0;
+  nextBtn.disabled = queueIndex >= queue.length - 1;
+}
+
+function playSong(song){
+  buildQueueFor(song);
+  loadIntoPlayer(song);
+}
+
+function loadIntoPlayer(song){
+  const query = `${song.t} ${song.f} ${song.s}`;
+  dockTitle.textContent = song.t;
+  dockMeta.textContent = `${song.f} (${song.y}) · ${song.s}`;
+  dock.classList.add('open');
+
+  if(!ytReady){
+    pendingSong = song;
+    return;
+  }
+
+  const params = {
+    listType: 'search',
+    list: query,
+    autoplay: 1,
+    playsinline: 1
+  };
+
+  if(ytPlayer){
+    ytPlayer.loadPlaylist(params);
+  } else {
+    ytPlayer = new YT.Player('yt-player', {
+      width: '100%',
+      height: '100%',
+      playerVars: params,
+      events: {
+        onReady: onPlayerReady,
+        onStateChange: onPlayerStateChange,
+        onError: onPlayerError
+      }
+    });
+  }
+}
+
+function onPlayerError(event){
+  // 2=invalid param, 5=HTML5 error, 100=not found/removed, 101/150=embedding disabled by owner
+  dockMeta.textContent = "That video isn't available here — skipping to the next one…";
+  setTimeout(()=>{
+    if(queueIndex < queue.length - 1){
+      goToNext();
+    } else {
+      dockMeta.textContent = "Reached the end of this list.";
+    }
+  }, 900);
+}
+
+function onPlayerReady(event){
+  event.target.unMute();
+  event.target.playVideo();
+}
+
+function onPlayerStateChange(event){
+  const disc = document.getElementById('npDisc');
+  // YT.PlayerState: -1 unstarted, 0 ended, 1 playing, 2 paused, 3 buffering, 5 cued
+  if(event.data === 1){
+    disc.classList.remove('paused');
+  } else if(event.data === 2){
+    disc.classList.add('paused');
+  }
+  if(event.data === 0 && autoSkipToggle.checked){
+    goToNext();
+  }
+}
+
+function goToNext(){
+  if(queueIndex < queue.length - 1){
+    queueIndex++;
+    loadIntoPlayer(queue[queueIndex]);
+    updateNavButtons();
+  }
+}
+
+function goToPrev(){
+  if(queueIndex > 0){
+    queueIndex--;
+    loadIntoPlayer(queue[queueIndex]);
+    updateNavButtons();
+  }
+}
+
+nextBtn.onclick = goToNext;
+prevBtn.onclick = goToPrev;
+
+dockClose.onclick = ()=>{
+  dock.classList.remove('open');
+  if(ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
+};
+
+render();
+</script>
+</body>
+</html>
